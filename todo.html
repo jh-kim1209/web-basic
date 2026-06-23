@@ -1,0 +1,91 @@
+<html lang="ko">
+
+<head>
+    <title>Todo List</title>
+</head>
+
+<body>
+
+    <div>
+        <form id="add">
+            <input type="text" id="todotext" placeholder="Todo 내용 입력">
+            <button type="button" onclick="addTodo(document.getElementById('todotext').value)">add</button>
+        </form>
+    </div>
+
+    <div>
+        <ul id="todoList" style="list-style: none;"></ul>
+    </div>
+
+    <script>
+        let todoId = 1;
+        let todoList = new Array();
+
+        function addTodo(text) {
+            if (text == null || text == "") {
+                alert("할일을 입력해주세요.");
+                document.getElementById('todotext').focus();
+                return;
+            }
+
+            todoList.push({
+                "id": todoId,
+                "text": text,
+                "done": false
+            })
+
+            todoId++;
+            document.getElementById('todotext').value = "";
+            document.getElementById('todotext').focus();
+            renderTodoList();
+        }
+
+        function renderTodoList() {
+            document.getElementById('todoList').innerHTML = "";
+            todoList.forEach(todoItem => {
+                let item = document.createElement('li');
+
+                let checkbox = document.createElement('input');
+                checkbox.type = "checkbox";
+                checkbox.id = todoItem.id;
+
+                if (todoItem.done == true) {
+                    checkbox.checked = true;
+                }
+
+                checkbox.onclick = function () {
+                    toggleTodoDone(todoItem.id);
+                }
+
+                let deleteButton = document.createElement("button");
+                deleteButton.textContent = "삭제";
+                deleteButton.onclick = function () {
+                    deleteTodo(todoItem.id);
+                };
+
+                item.appendChild(checkbox);
+                item.appendChild(document.createTextNode(todoItem.text));
+                item.appendChild(deleteButton);
+
+                document.getElementById('todoList').appendChild(item);
+            });
+        }
+
+        function toggleTodoDone(id) {
+            for (let i = 0; i < todoList.length; i++) {
+                if (todoList[i].id == id) {
+                    todoList[i].done = !todoList[i].done;
+                    break;
+                }
+            }
+            renderTodoList();
+        }
+
+        function deleteTodo(id) {
+            todoList = todoList.filter(item => item.id !== id);
+            renderTodoList();
+        }
+    </script>
+</body>
+
+</html>

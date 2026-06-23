@@ -1,0 +1,39 @@
+<html lang="ko">
+
+<head>
+    <title>실시간 시계</title>
+</head>
+
+<body>
+
+    <div>
+        <label>
+            <span id="textLabel">너의 이름은?</span>
+            <input type="text" id="name" />
+        </label>
+        <button id="submitName" type="button" onclick="setName(document.getElementById('name').value)">입력</button>
+
+    </div>
+
+    <script>
+
+        let submitNameFlag = true;
+
+        function setName(name) {
+            if (submitNameFlag === false) {
+                document.getElementById("textLabel").innerText = `너의 이름은?`;
+                document.getElementById("name").hidden = false;
+                document.getElementById("submitName").innerText = `입력`;
+            } else {
+                document.getElementById("textLabel").innerText = `안녕, ${name}`;
+                document.getElementById("name").hidden = true;
+                document.getElementById("submitName").innerText = `수정`;
+            }
+
+            submitNameFlag = !submitNameFlag;
+        }
+
+    </script>
+</body>
+
+</html>

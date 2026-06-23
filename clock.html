@@ -1,0 +1,61 @@
+<html lang="ko">
+
+<head>
+    <title>실시간 시계</title>
+</head>
+
+<body>
+
+    <div>
+        <h1 id="clock">00:00</h1>
+        <button id="chgClock" onclick="changeFormat()">12-hour-clock</button>
+    </div>
+    <br>
+
+    <script>
+        let _24hourformat = true;
+
+        function updateClock() {
+            const date = new Date();
+
+            let hours = date.getHours();
+            let minutes = date.getMinutes();
+            let seconds = date.getSeconds();
+
+            if (_24hourformat === true) {
+                hours = hours < 10 ? '0' + hours : hours;
+                minutes = minutes < 10 ? '0' + minutes : minutes;
+                seconds = seconds < 10 ? '0' + seconds : seconds;
+            } else {
+                hours = hours % 12 || 12;
+
+                if (hours > 12) {
+                    hours = hours - 12;
+                }
+                // hours = hours < 10 ? '0' + hours : hours;
+                minutes = minutes < 10 ? '0' + minutes : minutes;
+                seconds = seconds < 10 ? '0' + seconds : seconds;
+            }
+
+            document.getElementById('clock').innerText = `${hours}:${minutes}:${seconds}`;
+        }
+
+        function changeFormat() {
+            if (_24hourformat === true) {
+                _24hourformat = false;
+                document.getElementById('chgClock').innerText = "24-hour-clock";
+            } else {
+                _24hourformat = true;
+                document.getElementById('chgClock').innerText = "12-hour-clock";
+            }
+
+            updateClock();
+        }
+
+        updateClock();
+
+        setInterval(updateClock, 1000);
+    </script>
+</body>
+
+</html>
