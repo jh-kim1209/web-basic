@@ -19,20 +19,20 @@
 
     <script>
         let todoId = 1;
-        let todoList = new Array();
+        let todoList = [];
 
         function addTodo(text) {
-            if (text == null || text == "") {
+            if (text === null || text === "") {
                 alert("할일을 입력해주세요.");
                 document.getElementById('todotext').focus();
                 return;
             }
 
             todoList.push({
-                "id": todoId,
-                "text": text,
-                "done": false
-            })
+                id: todoId,
+                text,
+                done: false
+            });
 
             todoId++;
             document.getElementById('todotext').value = "";
@@ -41,42 +41,22 @@
         }
 
         function renderTodoList() {
-            document.getElementById('todoList').innerHTML = "";
-            todoList.forEach(todoItem => {
-                let item = document.createElement('li');
+            const tagTodoUl = todoList.map(todoItem => `
+                <li>
+                    <input type="checkbox" onclick="toggleTodoDone(${todoItem.id})" ${todoItem.done ? 'checked' : ''}>
+                    <span style="${todoItem.done ? 'text-decoration: line-through;' : ''}">${todoItem.text}</span>
+                    <button onclick="deleteTodo(${todoItem.id})">삭제</button>
+                </li>
+            `).join("");
 
-                let checkbox = document.createElement('input');
-                checkbox.type = "checkbox";
-                checkbox.id = todoItem.id;
-
-                if (todoItem.done == true) {
-                    checkbox.checked = true;
-                }
-
-                checkbox.onclick = function () {
-                    toggleTodoDone(todoItem.id);
-                }
-
-                let deleteButton = document.createElement("button");
-                deleteButton.textContent = "삭제";
-                deleteButton.onclick = function () {
-                    deleteTodo(todoItem.id);
-                };
-
-                item.appendChild(checkbox);
-                item.appendChild(document.createTextNode(todoItem.text));
-                item.appendChild(deleteButton);
-
-                document.getElementById('todoList').appendChild(item);
-            });
+            document.getElementById('todoList').innerHTML = tagTodoUl;
         }
 
         function toggleTodoDone(id) {
-            for (let i = 0; i < todoList.length; i++) {
-                if (todoList[i].id == id) {
-                    todoList[i].done = !todoList[i].done;
-                    break;
-                }
+            const index = todoList.findIndex(todoItem => todoItem.id === id);
+
+            if (index !== -1) {
+                todoList[index].done = !todoList[index].done;
             }
             renderTodoList();
         }
