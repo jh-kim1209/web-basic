@@ -7,53 +7,38 @@
 <body>
 
     <div>
-        <h1 id="clock">00:00</h1>
-        <button id="chgClock" onclick="changeFormat()">12-hour-clock</button>
+        <h1 id="clock">00:00:00</h1>
+        <button id="formatChangeButton">12-hour-clock</button>
     </div>
     <br>
 
     <script>
         let _24hourformat = true;
 
-        function updateClock() {
+        const formatChangeButton = document.getElementById("formatChangeButton");
+
+        formatChangeButton.addEventListener("click", () => {
+            formatChangeButton.innerText = _24hourformat ? "24-hour-clock" : "12-hour-clock";
+
+            _24hourformat = !_24hourformat;
+            updateClock();
+        });
+
+        const pad = time => time < 10 ? '0' + time : time;
+
+        const updateClock = () => {
             const date = new Date();
 
             let hours = date.getHours();
             let minutes = date.getMinutes();
             let seconds = date.getSeconds();
 
-            if (_24hourformat === true) {
-                hours = hours < 10 ? '0' + hours : hours;
-                minutes = minutes < 10 ? '0' + minutes : minutes;
-                seconds = seconds < 10 ? '0' + seconds : seconds;
-            } else {
-                hours = hours % 12 || 12;
+            const displayHours = _24hourformat ? hours : hours % 12 || 12;
 
-                if (hours > 12) {
-                    hours = hours - 12;
-                }
-                // hours = hours < 10 ? '0' + hours : hours;
-                minutes = minutes < 10 ? '0' + minutes : minutes;
-                seconds = seconds < 10 ? '0' + seconds : seconds;
-            }
-
-            document.getElementById('clock').innerText = `${hours}:${minutes}:${seconds}`;
-        }
-
-        function changeFormat() {
-            if (_24hourformat === true) {
-                _24hourformat = false;
-                document.getElementById('chgClock').innerText = "24-hour-clock";
-            } else {
-                _24hourformat = true;
-                document.getElementById('chgClock').innerText = "12-hour-clock";
-            }
-
-            updateClock();
+            document.getElementById('clock').innerText = `${pad(displayHours)}:${pad(minutes)}:${pad(seconds)}`;
         }
 
         updateClock();
-
         setInterval(updateClock, 1000);
     </script>
 </body>
