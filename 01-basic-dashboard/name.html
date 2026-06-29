@@ -1,0 +1,65 @@
+<html lang="ko">
+
+<head>
+    <title>UserName</title>
+</head>
+
+<body>
+
+    <div>
+        <label>
+            <span id="labelText">너의 이름은?</span>
+            <input type="text" id="nameInput" />
+        </label>
+        <button id="submitNameButton" type="button">입력</button>
+
+    </div>
+
+    <script>
+        let isNameSubmit = false;
+
+        const user = { name: "" };
+
+        const labelText = document.getElementById("labelText");
+        const nameInput = document.getElementById("nameInput");
+        const submitButton = document.getElementById("submitNameButton");
+
+        const updateUI = (name, isSubmit) => {
+            labelText.innerText = isSubmit ? `안녕, ${name}` : "너의 이름은?";
+            nameInput.hidden = isSubmit;
+            nameInput.value = isSubmit ? "" : name;
+            submitButton.innerText = isSubmit ? "수정" : "입력";
+        }
+
+        const setName = (name) => {
+            if (!isNameSubmit) {
+                user.name = name;
+                localStorage.setItem("user", JSON.stringify(user));
+                isNameSubmit = true;
+            } else {
+                nameInput.value = user.name;
+                isNameSubmit = false;
+            }
+
+            updateUI(user.name, isNameSubmit);
+        };
+
+        const loadUser = () => {
+            const savedUser = JSON.parse(localStorage.getItem("user"));
+            if (savedUser && savedUser.name) {
+                user.name = savedUser.name;
+                isNameSubmit = true;
+                updateUI(user.name, isNameSubmit);
+            }
+        };
+
+        submitButton.addEventListener("click", () => {
+            setName(nameInput.value);
+        });
+
+        loadUser();
+
+    </script>
+</body>
+
+</html>

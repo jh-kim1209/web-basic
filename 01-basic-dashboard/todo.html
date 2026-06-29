@@ -1,0 +1,98 @@
+<html lang="ko">
+
+<head>
+    <title>Todo List</title>
+</head>
+
+<body>
+
+    <div>
+        <form id="add">
+            <input type="text" id="todoText" placeholder="Todo 내용 입력">
+            <button type="button" id="addTodoButton">add</button>
+        </form>
+    </div>
+
+    <div>
+        <ul id="todoList" style="list-style: none;"></ul>
+    </div>
+
+    <script>
+        let todoList = [];
+        let todoId = 1;
+
+        const todoText = document.getElementById("todoText");
+        const addTodoButton = document.getElementById("addTodoButton");
+
+        const renderTodoList = () => {
+            const tagTodoUl = todoList.map(todoItems => `
+                <li>
+                    <input type="checkbox" onclick="toggleTodoDone(${todoItems.id})" ${todoItems.done ? 'checked' : ''}>
+                    <span style="${todoItems.done ? 'text-decoration: line-through;' : ''}">${todoItems.todoItem}</span>
+                    <button onclick="deleteTodo(${todoItems.id})">삭제</button>
+                </li>
+            `).join("");
+
+            document.getElementById('todoList').innerHTML = tagTodoUl;
+        }
+
+        const addTodo = (todoItem) => {
+            if (todoItem === null || todoItem === "") {
+                alert("할일을 입력해주세요.");
+                todoText.focus();
+                return;
+            }
+
+            todoList.push({
+                id: todoId,
+                todoItem,
+                done: false
+            });
+
+            todoId++;
+            todoText.value = "";
+            todoText.focus();
+            renderTodoList();
+
+            localStorage.setItem("todoList", JSON.stringify(todoList));
+        }
+
+        addTodoButton.addEventListener("click", () => {
+            addTodo(todoText.value);
+        });
+
+        const toggleTodoDone = (id) => {
+            const index = todoList.findIndex(todoItems => todoItems.id === id);
+
+            if (index !== -1) {
+                todoList[index].done = !todoList[index].done;
+            }
+            renderTodoList();
+            localStorage.setItem("todoList", JSON.stringify(todoList));
+        }
+
+        const deleteTodo = (id) => {
+            todoList = todoList.filter(item => item.id !== id);
+            renderTodoList();
+            localStorage.setItem("todoList", JSON.stringify(todoList));
+        }
+
+        const loadTodoList = () => {
+            const savedTodoList = JSON.parse(localStorage.getItem("todoList"));
+
+            if (savedTodoList && savedTodoList.length > 0) {
+                todoList = savedTodoList;
+
+                const maxId = Math.max(...todoList.map(todoItems => todoItems.id));
+                todoId = maxId + 1;
+
+                renderTodoList();
+            }
+        };
+
+        loadTodoList();
+
+    </script>
+</body>
+
+</html>
