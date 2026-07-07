@@ -7,12 +7,13 @@
 <body>
 
     <div>
-        <label>
-            <span id="labelText">너의 이름은?</span>
-            <input type="text" id="nameInput" />
-        </label>
-        <button id="submitNameButton" type="button">입력</button>
-
+        <form id="nameForm">
+            <label>
+                <span id="labelText">너의 이름은?</span>
+                <input type="text" id="nameInput" />
+            </label>
+            <button id="submitNameButton" type="submit">입력</button>
+        </form>
     </div>
 
     <script>
@@ -20,6 +21,7 @@
 
         const user = { name: "" };
 
+        const nameForm = document.getElementById("nameForm");
         const labelText = document.getElementById("labelText");
         const nameInput = document.getElementById("nameInput");
         const submitButton = document.getElementById("submitNameButton");
@@ -46,14 +48,15 @@
 
         const loadUser = () => {
             const savedUser = JSON.parse(localStorage.getItem("user"));
-            if (savedUser && savedUser.name) {
+            if (savedUser?.name) {
                 user.name = savedUser.name;
                 isNameSubmit = true;
                 updateUI(user.name, isNameSubmit);
             }
         };
 
-        submitButton.addEventListener("click", () => {
+        nameForm.addEventListener("submit", (event) => {
+            event.preventDefault();
             setName(nameInput.value);
         });
 
