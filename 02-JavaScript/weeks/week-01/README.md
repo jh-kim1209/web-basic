@@ -24,3 +24,10 @@
 ## 📚 추천 참고서
 *   *Eloquent JavaScript (4th Edition)* - Chapter 3 (Functions)
 *   *You Don't Know JS Yet (Kyle Simpson)* - Scope & Closures
+
+## 💡 학습 및 구현 참고 가이드
+*   **상태 은닉화(Encapsulation)**: 내부 변수 `state`와 `listeners`를 클로저 외부로 유출하지 않고 메서드로만 접근할 수 있게 설계합니다.
+*   **불변성(Immutability)**: `getState()` 반환 시 및 `setState()`의 상태 병합 시 객체의 얕은 복사(`{ ...state }`)를 활용하여 예기치 못한 상태 변질을 방지합니다.
+*   **성능 최적화**: 상태 값에 실제 변화가 있을 때만 `listeners`가 알림을 받아 실행되도록 `setState` 내에서 조건식(`hasChanged`)을 올바르게 감싸서 리스너를 호출해야 합니다.
+*   **상세 개념 및 코드 분석 가이드**: 1주차 핵심 메커니즘과 동작 원리에 관한 상세한 설명 및 예제는 [explanation.md](./explanation.md) 파일에 정리되어 있으니 반드시 함께 참고하세요.
+
