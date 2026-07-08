@@ -11,7 +11,7 @@
  */
 export function pipe(...fns) {
   // TODO: 구현
-  return (x) => x;
+  return (initialValue) => fns.reduce((acc, fn) => fn(acc), initialValue);
 }
 
 /**
