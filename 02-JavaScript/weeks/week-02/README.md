@@ -27,3 +27,10 @@
 ## 📚 추천 참고서
 *   *Functional JavaScript with Ramda 2026* - Chapter 1 & 2
 *   *Eloquent JavaScript (4th Edition)* - Chapter 5 (Higher-Order Functions)
+
+## 💡 학습 및 구현 참고 가이드
+이번 주차 미션을 수행하고 자바스크립트 숙련도를 높이기 위한 상세 가이드는 아래 문서를 참고하십시오.
+*   [2주차 개념 설명서 (explanation.md)](file:///Users/jaehkim/projects/web-basic/02-JavaScript/weeks/week-02/explanation.md): 함수 합성(`pipe`), 커링(`curry`), 불변성(Immutability)에 대한 동작 원리와 함께 이해도를 극대화할 수 있는 **심화 자율 과제**를 제공합니다.
+*   **구현 핵심 규칙**:
+    1.  **원본 훼손 금지(Immutability)**: `sort` 구현 시 반드시 전개 연산자(`[...]`) 등을 사용해 복사본을 만든 뒤 정렬해야 합니다.
+    2.  **선언적 합성**: `processUsers`는 조건문이나 반복문 없이 오직 `pipe`, `filter`, `map`, `sort`만을 활용해 파이프라인 형태로 구현되어야 합니다.
