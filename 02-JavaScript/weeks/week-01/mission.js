@@ -16,7 +16,7 @@ export function createStore(initialState = {}) {
    */
   function getState() {
     // TODO: 구현
-    return state;
+    return { ...state };
   }
 
   /**
@@ -25,6 +25,22 @@ export function createStore(initialState = {}) {
    */
   function setState(newState) {
     // TODO: 구현
+    let hasChanged = false;
+
+    for (const key in newState) {
+      if (state[key] !== newState[key]) {
+        hasChanged = true;
+        break;
+      }
+    }
+
+    if (hasChanged) {
+      state = { ...state, ...newState };
+
+      const updatedState = { ...state };
+      listeners.forEach((listener) => listener(updatedState));
+    }
+
   }
 
   /**
@@ -34,8 +50,13 @@ export function createStore(initialState = {}) {
    */
   function subscribe(listener) {
     // TODO: 구현
+    if (typeof listener === "function" && !listeners.includes(listener)) {
+      listeners.push(listener);
+    }
+
     return function unsubscribe() {
       // TODO: 구독 해제 구현
+      listeners = listeners.filter((l) => l !== listener);
     };
   }
 
